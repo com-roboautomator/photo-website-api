@@ -4,8 +4,6 @@ import com.roboautomator.app.component.image.ImageEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.OffsetDateTime;
-
 import org.junit.jupiter.api.Test;
 
 public class CollectionUpdateTest {
