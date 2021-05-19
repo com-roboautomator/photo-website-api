@@ -27,6 +27,7 @@ jobs:
         uses: actions/setup-java@master
         with:
           java-version: '11'
+          distribution: 'adopt'
           architecture: 'x64'
       - name: Setting Gradle Cache
         uses: actions/cache@v1
