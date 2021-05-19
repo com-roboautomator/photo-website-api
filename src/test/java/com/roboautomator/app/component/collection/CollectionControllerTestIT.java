@@ -85,17 +85,21 @@ public class CollectionControllerTestIT {
     @Test
     void shouldGetCollectionFromDatabaseUsingId() throws JsonProcessingException, JSONException {
 
-        var response = template.getForEntity(baseUrl.toString() + "/e3228e77-b31b-40e6-9bfe-0e4359fb1455",
-                String.class);
+        var id = UUID.randomUUID();
+
+        collectionRepository
+                .save(CollectionEntity.builder().id(id).build().update(VALID_COLLECTION_UPDATE_BUILDER.build()));
+
+        var response = template.getForEntity(baseUrl.toString() + "/" + id, String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         JSONObject body = TestHelper.parseJson(response.getBody());
 
-        assertThat(body.get("title")).isEqualTo("default-test-title");
-        assertThat(body.get("index")).isEqualTo(0);
-        assertThat(body.get("tagTitle")).isEqualTo("default-test-tag-title");
-        assertThat(body.get("tagColour")).isEqualTo("default-test-tag-colour");
-        assertThat(body.get("titleImage")).isEqualTo(1);
+        assertThat(body.get("title")).isEqualTo(TEST_TITLE + "-update");
+        assertThat(body.get("index")).isEqualTo(TEST_INDEX + 1);
+        assertThat(body.get("tagTitle")).isEqualTo(TEST_TAG_TITLE + "-update");
+        assertThat(body.get("tagColour")).isEqualTo(TEST_TAG_COLOUR + "-update");
+        assertThat(body.get("titleImage")).isEqualTo(TEST_TITLE_IMAGE + 1);
 
     }
 
@@ -132,7 +136,7 @@ public class CollectionControllerTestIT {
         assertThat(body.get("tagColour")).isEqualTo(TEST_TAG_COLOUR);
         assertThat(body.get("titleImage")).isEqualTo(TEST_TITLE_IMAGE);
 
-        //clean up
+        // clean up
         collectionRepository.deleteById(id);
 
     }
@@ -153,7 +157,7 @@ public class CollectionControllerTestIT {
         template.delete(baseUrl.toString() + "/" + id, HttpMethod.DELETE);
 
         // Confirm that the entity is not longer present
-        assertThat(collectionRepository.findById(id)).isNotPresent();      
+        assertThat(collectionRepository.findById(id)).isNotPresent();
 
     }
 
