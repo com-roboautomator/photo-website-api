@@ -50,6 +50,10 @@ analyseWithJacoco: _setUpGradle
 	echo "Running jacoco analysis"
 	./gradlew jacocoTestCoverageVerification
 
+analyseWithSonar: _gitFetchUnshallow _setUpGradle
+	echo "Running sonar analysis"
+	./gradlew sonarqube
+
 package: _setUpGradle
 	echo "Packaging service"
 	./gradlew bootJar
