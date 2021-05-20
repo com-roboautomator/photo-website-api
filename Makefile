@@ -21,7 +21,7 @@ _functionalComposeDown:
 
 # HELPER SCRIPTS
 _waitForLocalService:
-	./scripts/wait-for-url.sh http://localhost:8080
+	./scripts/wait-for-url.sh http://localhost:8161
 
 _gitFetchUnshallow:
 	./scripts/git-deep-fetch.sh
