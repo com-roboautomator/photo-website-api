@@ -42,11 +42,6 @@ jobs:
         run: make testIntegration
       - name: Jacoco Analysis
         run: make analyseWithJacoco
-      - name: SonarCloud Analysis
-        run: make analyseWithSonar
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Functional Tests
         run: make testFunctional
 
