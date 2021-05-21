@@ -1,6 +1,12 @@
 package com.roboautomator.app.component.collection;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.roboautomator.app.component.image.ImageEntity;
@@ -23,8 +29,15 @@ public class CollectionEntity extends DefaultEntity {
     private Integer index;
     private String tagTitle;
     private String tagColour;
-    private ImageEntity images[];
     private Integer titleImage;
+
+    @ManyToMany
+    @JoinTable(
+        name="image_collections",
+        joinColumns = @JoinColumn(name="collection_id"),
+        inverseJoinColumns = @JoinColumn(name="image_id")
+    )
+    private Set <ImageEntity> images;
 
     public CollectionEntity update (CollectionUpdate collectionUpdate){
         title = collectionUpdate.getTitle();

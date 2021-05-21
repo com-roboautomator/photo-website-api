@@ -1,5 +1,7 @@
 package com.roboautomator.app.component.collection;
 
+import java.util.Set;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -26,7 +28,7 @@ public class CollectionUpdate {
 
     private String tagTitle;
     private String tagColour;
-    private ImageEntity images[];
+    private Set <ImageEntity> images;
     private Integer titleImage;
 
     public CollectionEntity toCollectionEntity() {

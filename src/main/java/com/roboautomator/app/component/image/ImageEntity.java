@@ -1,8 +1,12 @@
 package com.roboautomator.app.component.image;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.roboautomator.app.component.collection.CollectionEntity;
 import com.roboautomator.app.component.util.DefaultEntity;
 
 import lombok.Getter;
@@ -22,5 +26,16 @@ public class ImageEntity extends DefaultEntity {
     private String url;
     private Integer index;
     private String description;
+    
+    @ManyToMany(mappedBy = "images")
+    private Set <CollectionEntity> collections;
+
+    public ImageEntity update(ImageUpdate imageUpdate){
+        this.title = imageUpdate.getTitle();
+        this.url = imageUpdate.getUrl();
+        this.index = imageUpdate.getIndex();
+        this.description = imageUpdate.getDescription();
+        return this;
+    }
 
 }

@@ -4,6 +4,8 @@ import com.roboautomator.app.component.image.ImageEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 
 public class CollectionUpdateTest {
@@ -13,7 +15,7 @@ public class CollectionUpdateTest {
     private static final Integer TITLE_IMAGE = 1;
     private static final String TAG_TITLE = "test-tag-title";
     private static final String TAG_COLOUR = "test-tag-colour";
-    private static final ImageEntity IMAGES[] = { ImageEntity.builder().build() };
+    private static final Set <ImageEntity> IMAGES = Set.of(ImageEntity.builder().build());
 
     @Test
     void shouldBuildNewCollectionUpdateFromBuilder() {
