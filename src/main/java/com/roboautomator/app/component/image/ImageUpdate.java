@@ -18,7 +18,7 @@ public class ImageUpdate {
     private Integer index;
     private String description;
 
-    private ImageEntity toImageEntity(){
+    public ImageEntity toImageEntity(){
         return ImageEntity.builder()
             .title(getTitle())
             .url(getUrl())

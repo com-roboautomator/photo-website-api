@@ -58,4 +58,21 @@ public class CollectionUpdateTest {
 
     }
 
+    @Test
+    void shouldCreateCollectionEntityFromUpdate(){
+
+        var collectionUpdate = CollectionUpdate.builder().title(TITLE).index(INDEX).titleImage(TITLE_IMAGE)
+                .tagTitle(TAG_TITLE).tagColour(TAG_COLOUR).images(IMAGES).build();
+
+        var collection = collectionUpdate.toCollectionEntity();
+
+        assertThat(collection.getTitle()).isEqualTo(TITLE);
+        assertThat(collection.getIndex()).isEqualTo(INDEX);
+        assertThat(collection.getTitleImage()).isEqualTo(TITLE_IMAGE);
+        assertThat(collection.getTagTitle()).isEqualTo(TAG_TITLE);
+        assertThat(collection.getTagColour()).isEqualTo(TAG_COLOUR);
+        assertThat(collection.getImages()).isEqualTo(IMAGES);
+
+    }
+
 }
