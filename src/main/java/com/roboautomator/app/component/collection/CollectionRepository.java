@@ -6,5 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CollectionRepository extends JpaRepository<CollectionEntity, UUID>{
     Optional<CollectionEntity> findById(UUID id);
-    Optional<CollectionEntity> findByTitle(String title);
 }
