@@ -33,7 +33,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @AutoConfigureMockMvc
 @WebMvcTest(CollectionRepository.class)
-
 public class CollectionControllerTest extends AbstractMockMvcTest {
 
         private static final String TEST_ENDPOINT = "/collection";
@@ -103,9 +102,9 @@ public class CollectionControllerTest extends AbstractMockMvcTest {
                                                 TestHelper.serializeObject(createValidCollectionBuilder().build())))
                                 .andExpect(status().isOk()).andReturn();
 
-                String unpackedResponse = response.getResponse().getContentAsString();
+                var unpackedResponse = response.getResponse().getContentAsString();
 
-                assertThat(unpackedResponse).isNotNull();
+                assertThat(unpackedResponse).isNotEmpty();
                 assertThat(unpackedResponse).doesNotContain("previous-title");
                 assertThat(unpackedResponse).doesNotContain("previous-tag-title");
                 assertThat(unpackedResponse).doesNotContain("previous-tag-colour");
@@ -160,9 +159,9 @@ public class CollectionControllerTest extends AbstractMockMvcTest {
 
                 var response = mockMvc.perform(get(TEST_ENDPOINT + "/" + id)).andExpect(status().isOk()).andReturn();
 
-                String unpackedResponse = response.getResponse().getContentAsString();
+                var unpackedResponse = response.getResponse().getContentAsString();
 
-                assertThat(unpackedResponse).isNotNull();
+                assertThat(unpackedResponse).isNotEmpty();
                 assertThat(unpackedResponse).contains(id.toString());
                 assertThat(unpackedResponse).contains("test-title");
                 assertThat(unpackedResponse).contains("test-tag-colour");
