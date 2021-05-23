@@ -1,7 +1,9 @@
 package com.roboautomator.app.component.image;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,13 +38,29 @@ public class ImageController {
 
     @GetMapping(value = "/{imageId}")
     @ResponseStatus(HttpStatus.OK)
-    public ImageEntity getImage(@PathVariable String imageId){
+    public ImageEntity getImage(@PathVariable String imageId) {
         return getEntity(imageId);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    public UUID createImage(@Valid @RequestBody ImageUpdate update) {
+        log.info("Creating new image");
+        UUID id = UUID.randomUUID();
+        imageRepository.save(ImageEntity.builder().id(id).build().update(update));
+        return id;
+    }
+
+    @DeleteMapping(value = "/{imageId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteCollection(@PathVariable String imageId){
+        var entity = getEntity(imageId);
+        imageRepository.deleteById(entity.getId());
     }
 
     private ImageEntity getEntity(String uuid) {
 
-        //checkIfValidUUID(uuid);
+        // checkIfValidUUID(uuid);
 
         var maybeImage = imageRepository.findById(UUID.fromString(uuid));
         if (maybeImage.isPresent()) {

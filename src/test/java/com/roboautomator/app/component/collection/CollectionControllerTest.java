@@ -169,7 +169,7 @@ public class CollectionControllerTest extends AbstractMockMvcTest {
         }
 
         @Test
-        void shouldReturn200OKWhenCreatingEntity() throws Exception {
+        void shouldReturn200OKWhenCreatingCollection() throws Exception {
 
                 willReturn(createValidEntity().build()).given(collectionRepository).save(any());
 
