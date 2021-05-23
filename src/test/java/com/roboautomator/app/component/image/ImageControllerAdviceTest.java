@@ -1,7 +1,6 @@
 package com.roboautomator.app.component.image;
 
 import com.jayway.jsonpath.JsonPath;
-import com.roboautomator.app.component.collection.CollectionControllerAdvice;
 import com.roboautomator.app.component.util.AbstractMockMvcTest;
 import com.roboautomator.app.component.util.TestHelper;
 
