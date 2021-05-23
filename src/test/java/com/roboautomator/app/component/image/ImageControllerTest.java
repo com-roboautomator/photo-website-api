@@ -53,26 +53,41 @@ public class ImageControllerTest extends AbstractMockMvcTest {
     @Test
     void shouldReturn400WhenImageIdIsNotValidUUIDForUpdates() throws Exception {
 
-        // var id = "invalid-UUID";
+        var id = "invalid-UUID";
 
-        // var response = mockMvc
-        //         .perform(put(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
-        //                 .content(TestHelper.serializeObject(createValidImageBuilder().build())))
-        //         .andExpect(status().isBadRequest()).andReturn();
+        var response = mockMvc
+                .perform(put(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
+                        .content(TestHelper.serializeObject(createValidImageBuilder().build())))
+                .andExpect(status().isBadRequest()).andReturn();
 
-        // verifyNoInteractions(imageRepository);
+        verifyNoInteractions(imageRepository);
 
-        // var responseAsString = response.getResponse().getContentAsString();
+        var responseAsString = response.getResponse().getContentAsString();
 
-        // assertThat(responseAsString).isNotNull();
-        // assertThat(JsonPath.<String>read(responseAsString, "$.message")).isEqualTo("Validation failed");
-        // assertThat(JsonPath.<String>read(responseAsString, "$.errors[0].field")).isEqualTo("collectionId");
-        // assertThat(JsonPath.<String>read(responseAsString, "$.errors[0].error"))
-        //         .contains("invalid-UUID is not a valid UUID");
+        assertThat(responseAsString).isNotNull();
+        assertThat(JsonPath.<String>read(responseAsString, "$.message")).isEqualTo("Validation failed");
+        assertThat(JsonPath.<String>read(responseAsString, "$.errors[0].field")).isEqualTo("imageId");
+        assertThat(JsonPath.<String>read(responseAsString, "$.errors[0].error"))
+                .contains("invalid-UUID is not a valid UUID");
     }
 
     @Test
-    void shouldReturn404NotFoundWhenImageDoesNotExistOnUpdate() {
+    void shouldReturn404NotFoundWhenImageDoesNotExistOnUpdate() throws Exception {
+
+        var id = UUID.randomUUID();
+
+        willReturn(Optional.empty()).given(imageRepository).findById(id);
+
+        var response = mockMvc
+                .perform(put(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
+                        .content(TestHelper.serializeObject(createValidImage().build())))
+                .andExpect(status().isNotFound()).andReturn();
+
+        var responseAsString = response.getResponse().getContentAsString();
+
+        assertThat(responseAsString).isNotEmpty();
+        assertThat(JsonPath.<String>read(responseAsString, "$.message"))
+                .isEqualTo("Image with id \"" + id + "\" not found");
 
     }
 
@@ -105,12 +120,42 @@ public class ImageControllerTest extends AbstractMockMvcTest {
     }
 
     @Test
-    void shouldReturn400WhenImageIsNotValidUUIDForGet() {
+    void shouldReturn400WhenImageIsNotValidUUIDForGet() throws Exception {
+
+        var id = UUID.randomUUID();
+
+        willReturn(Optional.empty()).given(imageRepository).findById(id);
+
+        var response = mockMvc
+                .perform(get(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
+                        .content(TestHelper.serializeObject(createValidImage().build())))
+                .andExpect(status().isNotFound()).andReturn();
+
+        var responseAsString = response.getResponse().getContentAsString();
+
+        assertThat(responseAsString).isNotEmpty();
+        assertThat(JsonPath.<String>read(responseAsString, "$.message"))
+                .isEqualTo("Image with id \"" + id + "\" not found");
 
     }
 
     @Test
-    void shouldReturn404NotRoundWhenImageDoesNotExistOnGet() {
+    void shouldReturn404NotRoundWhenImageDoesNotExistOnGet() throws Exception {
+
+        var id = UUID.randomUUID();
+
+        willReturn(Optional.empty()).given(imageRepository).findById(id);
+
+        var response = mockMvc
+                .perform(get(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
+                        .content(TestHelper.serializeObject(createValidImage().build())))
+                .andExpect(status().isNotFound()).andReturn();
+
+        var responseAsString = response.getResponse().getContentAsString();
+
+        assertThat(responseAsString).isNotEmpty();
+        assertThat(JsonPath.<String>read(responseAsString, "$.message"))
+                .isEqualTo("Image with id \"" + id + "\" not found");
 
     }
 
@@ -151,12 +196,42 @@ public class ImageControllerTest extends AbstractMockMvcTest {
     }
 
     @Test
-    void shouldReturn400WhenImageIsNotValidUUIDForDelete() {
+    void shouldReturn400WhenImageIsNotValidUUIDForDelete() throws Exception {
+
+        var id = UUID.randomUUID();
+
+        willReturn(Optional.empty()).given(imageRepository).findById(id);
+
+        var response = mockMvc
+                .perform(delete(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
+                        .content(TestHelper.serializeObject(createValidImage().build())))
+                .andExpect(status().isNotFound()).andReturn();
+
+        var responseAsString = response.getResponse().getContentAsString();
+
+        assertThat(responseAsString).isNotEmpty();
+        assertThat(JsonPath.<String>read(responseAsString, "$.message"))
+                .isEqualTo("Image with id \"" + id + "\" not found");
 
     }
 
     @Test
-    void shouldReturn404WhenImageIsNotFoundForDelete() {
+    void shouldReturn404WhenImageIsNotFoundForDelete() throws Exception {
+
+        var id = UUID.randomUUID();
+
+        willReturn(Optional.empty()).given(imageRepository).findById(id);
+
+        var response = mockMvc
+                .perform(delete(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
+                        .content(TestHelper.serializeObject(createValidImage().build())))
+                .andExpect(status().isNotFound()).andReturn();
+
+        var responseAsString = response.getResponse().getContentAsString();
+
+        assertThat(responseAsString).isNotEmpty();
+        assertThat(JsonPath.<String>read(responseAsString, "$.message"))
+                .isEqualTo("Image with id \"" + id + "\" not found");
 
     }
 
