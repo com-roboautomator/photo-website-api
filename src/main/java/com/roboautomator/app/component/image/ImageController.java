@@ -60,13 +60,15 @@ public class ImageController {
 
     private ImageEntity getEntity(String uuid) {
 
-        // checkIfValidUUID(uuid);
+        checkIfValidUUID(uuid);
 
         var maybeImage = imageRepository.findById(UUID.fromString(uuid));
         if (maybeImage.isPresent()) {
             return maybeImage.get();
         } else {
-            return null;
+            String errorMessage = "Image with id \"" + uuid + "\" not found";
+            log.info(errorMessage);
+            throw new ImageControllerEntityNotFoundException(errorMessage);
         }
 
     }
