@@ -101,6 +101,33 @@ public class CollectionControllerTestIT {
         assertThat(body.get("tagColour")).isEqualTo(TEST_TAG_COLOUR + "-update");
         assertThat(body.get("titleImage")).isEqualTo(TEST_TITLE_IMAGE + 1);
 
+        // clean up
+        collectionRepository.deleteById(id);
+
+    }
+
+    @Test
+    void shouldGetAllCollectionsFromDatabase() throws JSONException {
+
+        var id1 = UUID.randomUUID();
+        var id2 = UUID.randomUUID();
+
+        collectionRepository.save(CollectionEntity.builder().title("test-title").titleImage(0).index(0).id(id1).build());
+        collectionRepository.save(CollectionEntity.builder().title("test-title").titleImage(0).index(0).id(id2).build());
+
+        var response = template.getForEntity(baseUrl.toString(), String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        var collections = TestHelper.parseJsonArray(response.getBody());
+
+        assertThat(collections.length()).isEqualTo(3); // allow for the initial test entry
+        assertThat(collections.getJSONObject(1).get("id").toString()).contains(id1.toString());
+        assertThat(collections.getJSONObject(2).get("id").toString()).contains(id2.toString());
+
+        //clean up
+        collectionRepository.deleteById(id1);
+        collectionRepository.deleteById(id2);
+
     }
 
     @Test

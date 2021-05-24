@@ -1,5 +1,6 @@
 package com.roboautomator.app.component.collection;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -39,6 +40,13 @@ public class CollectionController {
     public CollectionEntity getCollection(@PathVariable String collectionId) {
         return getEntity(collectionId);
     }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<CollectionEntity> getCollections(){
+        return collectionRepository.findAll();
+    }
+
 
     @PutMapping(value = "/{collectionId}")
     @ResponseStatus(HttpStatus.OK)

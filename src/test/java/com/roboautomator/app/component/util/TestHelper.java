@@ -3,6 +3,7 @@ package com.roboautomator.app.component.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.skyscreamer.jsonassert.JSONParser;
@@ -17,6 +18,9 @@ public class TestHelper {
 
     public static JSONObject parseJson(String input) throws JSONException {
         return (JSONObject) JSONParser.parseJSON(input);
+    }
+    public static JSONArray parseJsonArray(String input) throws JSONException {
+        return (JSONArray) JSONParser.parseJSON(input);
     }
 
     public static HttpEntity<String> getHttpEntity(String payload) {

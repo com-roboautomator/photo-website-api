@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jayway.jsonpath.JsonPath;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -237,6 +238,27 @@ public class CollectionControllerTest extends AbstractMockMvcTest {
                 assertThat(JsonPath.<String>read(responseAsString, "$.message"))
                                 .isEqualTo("Collection with id \"" + id + "\" not found");
 
+        }
+
+        @Test
+        void shouldReturn200OKWhenFetchingAllCollections() throws Exception {
+
+                var id1 = UUID.randomUUID();
+                var id2 = UUID.randomUUID();
+
+                willReturn(List.of(CollectionEntity.builder().id(id1).build(),
+                                CollectionEntity.builder().id(id2).build())).given(collectionRepository).findAll();
+
+                var response = mockMvc.perform(get(TEST_ENDPOINT)).andExpect(status().isOk()).andReturn();
+                var responseAsString = TestHelper.parseJsonArray(response.getResponse().getContentAsString());
+
+                assertThat(responseAsString.length()).isEqualTo(2);
+
+                var response1 = responseAsString.getJSONObject(0);
+                var response2 = responseAsString.getJSONObject(1);
+
+                assertThat(response1.get("id").toString()).contains(id1.toString());
+                assertThat(response2.get("id").toString()).contains(id2.toString());
         }
 
         private static CollectionEntityBuilder<?, ?> createValidEntity() {
