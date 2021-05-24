@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,225 +37,251 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @WebMvcTest(ImageRepository.class)
 public class ImageControllerTest extends AbstractMockMvcTest {
 
-    private static final String TEST_ENDPOINT = "/image";
-    private static final String TEST_TITLE = "test-title";
-    private static final String TEST_URL = "test-url";
-    private static final Integer TEST_INDEX = 0;
-    private static final String TEST_DESCRIPTION = "test-description";
+        private static final String TEST_ENDPOINT = "/image";
+        private static final String TEST_TITLE = "test-title";
+        private static final String TEST_URL = "test-url";
+        private static final Integer TEST_INDEX = 0;
+        private static final String TEST_DESCRIPTION = "test-description";
 
-    private MockMvc mockMvc;
+        private MockMvc mockMvc;
 
-    @BeforeEach
-    void setupMockMvc() throws JsonProcessingException {
-        var imageController = new ImageController(imageRepository);
-        mockMvc = MockMvcBuilders.standaloneSetup(imageController).setControllerAdvice(ImageControllerAdvice.class)
-                .build();
-    }
+        @BeforeEach
+        void setupMockMvc() throws JsonProcessingException {
+                var imageController = new ImageController(imageRepository);
+                mockMvc = MockMvcBuilders.standaloneSetup(imageController)
+                                .setControllerAdvice(ImageControllerAdvice.class).build();
+        }
 
-    @Test
-    void shouldReturn400WhenImageIdIsNotValidUUIDForUpdates() throws Exception {
+        @Test
+        void shouldReturn400WhenImageIdIsNotValidUUIDForUpdates() throws Exception {
 
-        var id = "invalid-UUID";
+                var id = "invalid-UUID";
 
-        var response = mockMvc
-                .perform(put(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
-                        .content(TestHelper.serializeObject(createValidImageBuilder().build())))
-                .andExpect(status().isBadRequest()).andReturn();
+                var response = mockMvc
+                                .perform(put(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
+                                                .content(TestHelper.serializeObject(createValidImageBuilder().build())))
+                                .andExpect(status().isBadRequest()).andReturn();
 
-        verifyNoInteractions(imageRepository);
+                verifyNoInteractions(imageRepository);
 
-        var responseAsString = response.getResponse().getContentAsString();
+                var responseAsString = response.getResponse().getContentAsString();
 
-        assertThat(responseAsString).isNotNull();
-        assertThat(JsonPath.<String>read(responseAsString, "$.message")).isEqualTo("Validation failed");
-        assertThat(JsonPath.<String>read(responseAsString, "$.errors[0].field")).isEqualTo("imageId");
-        assertThat(JsonPath.<String>read(responseAsString, "$.errors[0].error"))
-                .contains("invalid-UUID is not a valid UUID");
-    }
+                assertThat(responseAsString).isNotNull();
+                assertThat(JsonPath.<String>read(responseAsString, "$.message")).isEqualTo("Validation failed");
+                assertThat(JsonPath.<String>read(responseAsString, "$.errors[0].field")).isEqualTo("imageId");
+                assertThat(JsonPath.<String>read(responseAsString, "$.errors[0].error"))
+                                .contains("invalid-UUID is not a valid UUID");
+        }
 
-    @Test
-    void shouldReturn404NotFoundWhenImageDoesNotExistOnUpdate() throws Exception {
+        @Test
+        void shouldReturn404NotFoundWhenImageDoesNotExistOnUpdate() throws Exception {
 
-        var id = UUID.randomUUID();
+                var id = UUID.randomUUID();
 
-        willReturn(Optional.empty()).given(imageRepository).findById(id);
+                willReturn(Optional.empty()).given(imageRepository).findById(id);
 
-        var response = mockMvc
-                .perform(put(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
-                        .content(TestHelper.serializeObject(createValidImage().build())))
-                .andExpect(status().isNotFound()).andReturn();
+                var response = mockMvc
+                                .perform(put(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
+                                                .content(TestHelper.serializeObject(createValidImage().build())))
+                                .andExpect(status().isNotFound()).andReturn();
 
-        var responseAsString = response.getResponse().getContentAsString();
+                var responseAsString = response.getResponse().getContentAsString();
 
-        assertThat(responseAsString).isNotEmpty();
-        assertThat(JsonPath.<String>read(responseAsString, "$.message"))
-                .isEqualTo("Image with id \"" + id + "\" not found");
+                assertThat(responseAsString).isNotEmpty();
+                assertThat(JsonPath.<String>read(responseAsString, "$.message"))
+                                .isEqualTo("Image with id \"" + id + "\" not found");
 
-    }
+        }
 
-    @Test
-    void shouldReturn200OKWhenUpdatingImageEntity() throws JsonProcessingException, Exception {
+        @Test
+        void shouldReturn200OKWhenUpdatingImageEntity() throws JsonProcessingException, Exception {
 
-        var id = UUID.randomUUID();
+                var id = UUID.randomUUID();
 
-        willReturn(Optional.of(createValidImage().description("previous-description").url("previous-url")
-                .title("previous-title").id(id).build())).given(imageRepository).findById(id);
+                willReturn(Optional.of(createValidImage().description("previous-description").url("previous-url")
+                                .title("previous-title").id(id).build())).given(imageRepository).findById(id);
 
-        var response = mockMvc
-                .perform(put(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
-                        .content(TestHelper.serializeObject(createValidImageBuilder().build())))
-                .andExpect(status().isOk()).andReturn();
+                var response = mockMvc
+                                .perform(put(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
+                                                .content(TestHelper.serializeObject(createValidImageBuilder().build())))
+                                .andExpect(status().isOk()).andReturn();
 
-        var unpackedResponse = response.getResponse().getContentAsString();
+                var unpackedResponse = response.getResponse().getContentAsString();
 
-        System.out.println("RESPONSE " + unpackedResponse);
+                System.out.println("RESPONSE " + unpackedResponse);
 
-        assertThat(unpackedResponse).isNotEmpty();
-        assertThat(unpackedResponse).doesNotContain("previous-title");
-        assertThat(unpackedResponse).doesNotContain("previous-description");
-        assertThat(unpackedResponse).doesNotContain("previous-url");
+                assertThat(unpackedResponse).isNotEmpty();
+                assertThat(unpackedResponse).doesNotContain("previous-title");
+                assertThat(unpackedResponse).doesNotContain("previous-description");
+                assertThat(unpackedResponse).doesNotContain("previous-url");
 
-        assertThat(unpackedResponse).contains(TEST_TITLE);
-        assertThat(unpackedResponse).contains(TEST_DESCRIPTION);
-        assertThat(unpackedResponse).contains(TEST_URL);
+                assertThat(unpackedResponse).contains(TEST_TITLE);
+                assertThat(unpackedResponse).contains(TEST_DESCRIPTION);
+                assertThat(unpackedResponse).contains(TEST_URL);
 
-    }
+        }
 
-    @Test
-    void shouldReturn400WhenImageIsNotValidUUIDForGet() throws Exception {
+        @Test
+        void shouldReturn400WhenImageIsNotValidUUIDForGet() throws Exception {
 
-        var id = UUID.randomUUID();
+                var id = UUID.randomUUID();
 
-        willReturn(Optional.empty()).given(imageRepository).findById(id);
+                willReturn(Optional.empty()).given(imageRepository).findById(id);
 
-        var response = mockMvc
-                .perform(get(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
-                        .content(TestHelper.serializeObject(createValidImage().build())))
-                .andExpect(status().isNotFound()).andReturn();
+                var response = mockMvc
+                                .perform(get(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
+                                                .content(TestHelper.serializeObject(createValidImage().build())))
+                                .andExpect(status().isNotFound()).andReturn();
 
-        var responseAsString = response.getResponse().getContentAsString();
+                var responseAsString = response.getResponse().getContentAsString();
 
-        assertThat(responseAsString).isNotEmpty();
-        assertThat(JsonPath.<String>read(responseAsString, "$.message"))
-                .isEqualTo("Image with id \"" + id + "\" not found");
+                assertThat(responseAsString).isNotEmpty();
+                assertThat(JsonPath.<String>read(responseAsString, "$.message"))
+                                .isEqualTo("Image with id \"" + id + "\" not found");
 
-    }
+        }
 
-    @Test
-    void shouldReturn404NotRoundWhenImageDoesNotExistOnGet() throws Exception {
+        @Test
+        void shouldReturn404NotRoundWhenImageDoesNotExistOnGet() throws Exception {
 
-        var id = UUID.randomUUID();
+                var id = UUID.randomUUID();
 
-        willReturn(Optional.empty()).given(imageRepository).findById(id);
+                willReturn(Optional.empty()).given(imageRepository).findById(id);
 
-        var response = mockMvc
-                .perform(get(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
-                        .content(TestHelper.serializeObject(createValidImage().build())))
-                .andExpect(status().isNotFound()).andReturn();
+                var response = mockMvc
+                                .perform(get(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
+                                                .content(TestHelper.serializeObject(createValidImage().build())))
+                                .andExpect(status().isNotFound()).andReturn();
 
-        var responseAsString = response.getResponse().getContentAsString();
+                var responseAsString = response.getResponse().getContentAsString();
 
-        assertThat(responseAsString).isNotEmpty();
-        assertThat(JsonPath.<String>read(responseAsString, "$.message"))
-                .isEqualTo("Image with id \"" + id + "\" not found");
+                assertThat(responseAsString).isNotEmpty();
+                assertThat(JsonPath.<String>read(responseAsString, "$.message"))
+                                .isEqualTo("Image with id \"" + id + "\" not found");
 
-    }
+        }
 
-    @Test
-    void shouldReturn200OKWhenGettingImageEntity() throws Exception {
+        @Test
+        void shouldReturn200OKWhenGettingImageEntity() throws Exception {
 
-        var id = UUID.randomUUID();
+                var id = UUID.randomUUID();
 
-        willReturn(Optional.of(createValidImage().id(id).build())).given(imageRepository).findById(id);
+                willReturn(Optional.of(createValidImage().id(id).build())).given(imageRepository).findById(id);
 
-        var response = mockMvc.perform(get(TEST_ENDPOINT + "/" + id)).andExpect(status().isOk()).andReturn();
+                var response = mockMvc.perform(get(TEST_ENDPOINT + "/" + id)).andExpect(status().isOk()).andReturn();
 
-        var unpackedResponse = response.getResponse().getContentAsString();
+                var unpackedResponse = response.getResponse().getContentAsString();
 
-        assertThat(unpackedResponse).isNotEmpty();
-        assertThat(unpackedResponse).contains(id.toString());
-        assertThat(unpackedResponse).contains(TEST_TITLE);
-        assertThat(unpackedResponse).contains(TEST_URL);
-        assertThat(unpackedResponse).contains(TEST_DESCRIPTION);
+                assertThat(unpackedResponse).isNotEmpty();
+                assertThat(unpackedResponse).contains(id.toString());
+                assertThat(unpackedResponse).contains(TEST_TITLE);
+                assertThat(unpackedResponse).contains(TEST_URL);
+                assertThat(unpackedResponse).contains(TEST_DESCRIPTION);
 
-    }
+        }
 
-    @Test
-    void shouldReturn200OKWhenCreatingImage() throws Exception {
+        @Test
+        void shouldReturn200OKWhenGettingAllImages() throws Exception {
 
-        willReturn(createValidImage().build()).given(imageRepository).save(any());
+                var id1 = UUID.randomUUID();
+                var id2 = UUID.randomUUID();
 
-        mockMvc.perform(post(TEST_ENDPOINT + "/").contentType(MediaType.APPLICATION_JSON)
-                .content(TestHelper.serializeObject(createValidImage().build()))).andExpect(status().isOk())
-                .andReturn();
+                willReturn(List.of(ImageEntity.builder().id(id1).build(), ImageEntity.builder().id(id2).build()))
+                                .given(imageRepository).findAll();
 
-        var argumentCapture = ArgumentCaptor.forClass(ImageEntity.class);
-        verify(imageRepository).save(argumentCapture.capture());
+                var response = mockMvc.perform(get(TEST_ENDPOINT)).andExpect(status().isOk()).andReturn();
 
-        var imageEntity = argumentCapture.getValue();
-        assertThat(imageEntity.getId()).isNotNull();
+                var responseAsString = response.getResponse().getContentAsString();
+                var responseAsArray = TestHelper.parseJsonArray(responseAsString);
 
-    }
+                assertThat(responseAsArray.length()).isEqualTo(2);
 
-    @Test
-    void shouldReturn400WhenImageIsNotValidUUIDForDelete() throws Exception {
+                var response1 = responseAsArray.getJSONObject(0);
+                var response2 = responseAsArray.getJSONObject(1);
 
-        var id = UUID.randomUUID();
+                assertThat(response1.get("id").toString()).contains(id1.toString());
+                assertThat(response2.get("id").toString()).contains(id2.toString());
 
-        willReturn(Optional.empty()).given(imageRepository).findById(id);
+        }
 
-        var response = mockMvc
-                .perform(delete(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
-                        .content(TestHelper.serializeObject(createValidImage().build())))
-                .andExpect(status().isNotFound()).andReturn();
+        @Test
+        void shouldReturn200OKWhenCreatingImage() throws Exception {
 
-        var responseAsString = response.getResponse().getContentAsString();
+                willReturn(createValidImage().build()).given(imageRepository).save(any());
 
-        assertThat(responseAsString).isNotEmpty();
-        assertThat(JsonPath.<String>read(responseAsString, "$.message"))
-                .isEqualTo("Image with id \"" + id + "\" not found");
+                mockMvc.perform(post(TEST_ENDPOINT + "/").contentType(MediaType.APPLICATION_JSON)
+                                .content(TestHelper.serializeObject(createValidImage().build())))
+                                .andExpect(status().isOk()).andReturn();
 
-    }
+                var argumentCapture = ArgumentCaptor.forClass(ImageEntity.class);
+                verify(imageRepository).save(argumentCapture.capture());
 
-    @Test
-    void shouldReturn404WhenImageIsNotFoundForDelete() throws Exception {
+                var imageEntity = argumentCapture.getValue();
+                assertThat(imageEntity.getId()).isNotNull();
 
-        var id = UUID.randomUUID();
+        }
 
-        willReturn(Optional.empty()).given(imageRepository).findById(id);
+        @Test
+        void shouldReturn400WhenImageIsNotValidUUIDForDelete() throws Exception {
 
-        var response = mockMvc
-                .perform(delete(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
-                        .content(TestHelper.serializeObject(createValidImage().build())))
-                .andExpect(status().isNotFound()).andReturn();
+                var id = UUID.randomUUID();
 
-        var responseAsString = response.getResponse().getContentAsString();
+                willReturn(Optional.empty()).given(imageRepository).findById(id);
 
-        assertThat(responseAsString).isNotEmpty();
-        assertThat(JsonPath.<String>read(responseAsString, "$.message"))
-                .isEqualTo("Image with id \"" + id + "\" not found");
+                var response = mockMvc
+                                .perform(delete(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
+                                                .content(TestHelper.serializeObject(createValidImage().build())))
+                                .andExpect(status().isNotFound()).andReturn();
 
-    }
+                var responseAsString = response.getResponse().getContentAsString();
 
-    @Test
-    void shouldReturn200OKWhenDeletingImage() throws Exception {
+                assertThat(responseAsString).isNotEmpty();
+                assertThat(JsonPath.<String>read(responseAsString, "$.message"))
+                                .isEqualTo("Image with id \"" + id + "\" not found");
 
-        var id = UUID.randomUUID();
+        }
 
-        willReturn(Optional.of(createValidImage().id(id).build())).given(imageRepository).findById(id);
+        @Test
+        void shouldReturn404WhenImageIsNotFoundForDelete() throws Exception {
 
-        mockMvc.perform(delete(TEST_ENDPOINT + "/" + id)).andExpect(status().isOk());
+                var id = UUID.randomUUID();
 
-        verify(imageRepository, times(1)).deleteById(eq(id));
+                willReturn(Optional.empty()).given(imageRepository).findById(id);
 
-    }
+                var response = mockMvc
+                                .perform(delete(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
+                                                .content(TestHelper.serializeObject(createValidImage().build())))
+                                .andExpect(status().isNotFound()).andReturn();
 
-    private static ImageEntityBuilder<?, ?> createValidImage() {
-        return ImageEntity.builder().title(TEST_TITLE).url(TEST_URL).index(TEST_INDEX).description(TEST_DESCRIPTION);
-    }
+                var responseAsString = response.getResponse().getContentAsString();
 
-    private static ImageUpdate.ImageUpdateBuilder createValidImageBuilder() {
-        return ImageUpdate.builder().title(TEST_TITLE).url(TEST_URL).index(TEST_INDEX).description(TEST_DESCRIPTION);
-    }
+                assertThat(responseAsString).isNotEmpty();
+                assertThat(JsonPath.<String>read(responseAsString, "$.message"))
+                                .isEqualTo("Image with id \"" + id + "\" not found");
+
+        }
+
+        @Test
+        void shouldReturn200OKWhenDeletingImage() throws Exception {
+
+                var id = UUID.randomUUID();
+
+                willReturn(Optional.of(createValidImage().id(id).build())).given(imageRepository).findById(id);
+
+                mockMvc.perform(delete(TEST_ENDPOINT + "/" + id)).andExpect(status().isOk());
+
+                verify(imageRepository, times(1)).deleteById(eq(id));
+
+        }
+
+        private static ImageEntityBuilder<?, ?> createValidImage() {
+                return ImageEntity.builder().title(TEST_TITLE).url(TEST_URL).index(TEST_INDEX)
+                                .description(TEST_DESCRIPTION);
+        }
+
+        private static ImageUpdate.ImageUpdateBuilder createValidImageBuilder() {
+                return ImageUpdate.builder().title(TEST_TITLE).url(TEST_URL).index(TEST_INDEX)
+                                .description(TEST_DESCRIPTION);
+        }
 
 }

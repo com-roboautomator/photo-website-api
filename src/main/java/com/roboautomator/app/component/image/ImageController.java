@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -40,6 +41,12 @@ public class ImageController {
     @ResponseStatus(HttpStatus.OK)
     public ImageEntity getImage(@PathVariable String imageId) {
         return getEntity(imageId);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<ImageEntity> getImages(){
+        return imageRepository.findAll();
     }
 
     @PostMapping
