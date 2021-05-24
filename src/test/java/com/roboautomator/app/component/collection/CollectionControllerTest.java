@@ -19,6 +19,7 @@ import com.jayway.jsonpath.JsonPath;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.roboautomator.app.component.collection.CollectionEntity.CollectionEntityBuilder;
 import com.roboautomator.app.component.util.AbstractMockMvcTest;
 import com.roboautomator.app.component.util.TestHelper;
 
@@ -238,7 +239,7 @@ public class CollectionControllerTest extends AbstractMockMvcTest {
 
         }
 
-        private static CollectionEntity.CollectionEntityBuilder createValidEntity() {
+        private static CollectionEntityBuilder<?, ?> createValidEntity() {
                 return CollectionEntity.builder().id(UUID.randomUUID()).title("test-title").index(0)
                                 .tagColour("test-tag-colour").tagTitle("test-tag-title").titleImage(1);
         }

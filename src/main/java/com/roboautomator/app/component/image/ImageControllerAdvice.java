@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.roboautomator.app.component.collection.CollectionControllerEntityNotFoundException;
 import com.roboautomator.app.component.util.DefaultExceptionResponse;
 import com.roboautomator.app.component.util.ValidationError;
 

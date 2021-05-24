@@ -19,6 +19,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jayway.jsonpath.JsonPath;
+import com.roboautomator.app.component.image.ImageEntity.ImageEntityBuilder;
 import com.roboautomator.app.component.util.AbstractMockMvcTest;
 import com.roboautomator.app.component.util.TestHelper;
 
@@ -248,7 +249,7 @@ public class ImageControllerTest extends AbstractMockMvcTest {
 
     }
 
-    private static ImageEntity.ImageEntityBuilder createValidImage() {
+    private static ImageEntityBuilder<?, ?> createValidImage() {
         return ImageEntity.builder().title(TEST_TITLE).url(TEST_URL).index(TEST_INDEX).description(TEST_DESCRIPTION);
     }
 

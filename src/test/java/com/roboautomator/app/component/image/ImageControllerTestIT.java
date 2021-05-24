@@ -7,9 +7,7 @@ import java.net.URL;
 import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.roboautomator.app.component.collection.CollectionEntity;
 import com.roboautomator.app.component.image.ImageEntity.ImageEntityBuilder;
-import com.roboautomator.app.component.util.DefaultEntity;
 import com.roboautomator.app.component.util.TestHelper;
 
 import org.springframework.http.HttpMethod;
@@ -81,7 +79,7 @@ public class ImageControllerTestIT {
 
         var id = UUID.randomUUID();
 
-        imageRepository.save(((ImageEntityBuilder) createValidImage().id(id)).build());
+        imageRepository.save(((ImageEntityBuilder<?, ?>) createValidImage().id(id)).build());
 
         var response = template.getForEntity(baseUrl.toString() + "/" + id, String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -147,7 +145,7 @@ public class ImageControllerTestIT {
         assertThat(imageRepository.findById(id)).isNotPresent();
     }
 
-    private ImageEntity.ImageEntityBuilder createValidImage() {
+    private ImageEntityBuilder<?, ?> createValidImage() {
         return ImageEntity.builder().title(TEST_TITLE).url(TEST_URL).index(TEST_INDEX).description(TEST_DESCRIPTION);
     }
 

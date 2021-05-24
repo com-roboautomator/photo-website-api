@@ -1,6 +1,7 @@
 package com.roboautomator.app.component.image;
 
 import com.jayway.jsonpath.JsonPath;
+import com.roboautomator.app.component.image.ImageEntity.ImageEntityBuilder;
 import com.roboautomator.app.component.util.AbstractMockMvcTest;
 import com.roboautomator.app.component.util.TestHelper;
 
@@ -86,7 +87,7 @@ public class ImageControllerAdviceTest extends AbstractMockMvcTest {
 
     }
 
-    private ImageEntity.ImageEntityBuilder createValidImage() {
+    private ImageEntityBuilder<?, ?> createValidImage() {
         return ImageEntity.builder().title(TITLE).url(URL).index(INDEX).description(DESCRIPTION);
     }
 
