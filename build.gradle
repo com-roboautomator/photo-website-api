@@ -75,9 +75,9 @@ apply from: 'gradle/sonar.gradle'
 
 bootJar {
     manifest {
-        attributes 'Start-Class': 'com.roboautomator.component.MainApplication'
+        attributes 'Start-Class': 'com.roboautomator.app.MainApplication'
     }
-    mainClassName = 'com.roboautomator.component.MainApplication'
+    mainClassName = 'com.roboautomator.app.MainApplication'
 }
 
 tasks.withType(JavaCompile) {

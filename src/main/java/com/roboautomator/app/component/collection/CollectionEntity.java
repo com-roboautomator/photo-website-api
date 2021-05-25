@@ -2,6 +2,7 @@ package com.roboautomator.app.component.collection;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -10,6 +11,8 @@ import javax.persistence.Table;
 
 import com.roboautomator.app.component.image.ImageEntity;
 import com.roboautomator.app.component.util.DefaultEntity;
+
+import org.hibernate.annotations.Cascade;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +33,7 @@ public class CollectionEntity extends DefaultEntity {
     private String tagColour;
     private Integer titleImage;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
         name="image_collections",
         joinColumns = @JoinColumn(name="collection_id"),

@@ -4,11 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.Set;
 import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.roboautomator.app.component.image.ImageEntity;
 import com.roboautomator.app.component.util.TestHelper;
 
+import org.assertj.core.groups.Tuple;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -112,8 +115,10 @@ public class CollectionControllerTestIT {
         var id1 = UUID.randomUUID();
         var id2 = UUID.randomUUID();
 
-        collectionRepository.save(CollectionEntity.builder().title("test-title").titleImage(0).index(0).id(id1).build());
-        collectionRepository.save(CollectionEntity.builder().title("test-title").titleImage(0).index(0).id(id2).build());
+        collectionRepository
+                .save(CollectionEntity.builder().title("test-title").titleImage(0).index(0).id(id1).build());
+        collectionRepository
+                .save(CollectionEntity.builder().title("test-title").titleImage(0).index(0).id(id2).build());
 
         var response = template.getForEntity(baseUrl.toString(), String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -124,7 +129,7 @@ public class CollectionControllerTestIT {
         assertThat(collections.getJSONObject(1).get("id").toString()).contains(id1.toString());
         assertThat(collections.getJSONObject(2).get("id").toString()).contains(id2.toString());
 
-        //clean up
+        // clean up
         collectionRepository.deleteById(id1);
         collectionRepository.deleteById(id2);
 
@@ -186,6 +191,28 @@ public class CollectionControllerTestIT {
         // Confirm that the entity is not longer present
         assertThat(collectionRepository.findById(id)).isNotPresent();
 
+    }
+
+    @Test
+    void shouldGetImagesFromCollection() {
+
+        var imageId1 = UUID.randomUUID();
+        var imageId2 = UUID.randomUUID();
+
+        var collectionEntity = CollectionEntity.builder().id(UUID.randomUUID()).title(TEST_TITLE).index(TEST_INDEX)
+                .titleImage(TEST_TITLE_IMAGE).tagTitle("TEST").tagColour("#5d5d5d")
+                .images(Set.of(createImage(imageId1), createImage(imageId2))).build();
+
+        var savedEntity = collectionRepository.save(collectionEntity);
+
+        assertThat(savedEntity.getImages())
+            .extracting(entity -> entity.getId())
+            .contains(imageId1, imageId2);
+
+    }
+
+    private ImageEntity createImage(UUID id) {
+        return ImageEntity.builder().id(id).title("test-title").url("https://picsum.photos/id/1000/500").index(0).build();
     }
 
 }

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.roboautomator.app.component.collection.CollectionEntity;
 import com.roboautomator.app.component.util.DefaultEntity;
 
@@ -28,6 +29,7 @@ public class ImageEntity extends DefaultEntity {
     private String description;
     
     @ManyToMany(mappedBy = "images")
+    @JsonIgnore
     private Set <CollectionEntity> collections;
 
     public ImageEntity update(ImageUpdate imageUpdate){
