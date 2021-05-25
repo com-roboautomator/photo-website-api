@@ -9,10 +9,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.roboautomator.app.component.image.ImageEntity;
+import com.roboautomator.app.component.slider.SliderEntity;
 import com.roboautomator.app.component.util.DefaultEntity;
-
-import org.hibernate.annotations.Cascade;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +41,10 @@ public class CollectionEntity extends DefaultEntity {
     )
     private Set <ImageEntity> images;
 
+    @ManyToMany(mappedBy = "collections")
+    @JsonIgnore
+    private Set <SliderEntity> sliders;
+    
     public CollectionEntity update (CollectionUpdate collectionUpdate){
         title = collectionUpdate.getTitle();
         index = collectionUpdate.getIndex();

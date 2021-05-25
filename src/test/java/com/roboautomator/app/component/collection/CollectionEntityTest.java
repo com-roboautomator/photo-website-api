@@ -2,7 +2,6 @@ package com.roboautomator.app.component.collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 

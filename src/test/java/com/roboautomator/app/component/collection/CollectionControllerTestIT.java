@@ -11,7 +11,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.roboautomator.app.component.image.ImageEntity;
 import com.roboautomator.app.component.util.TestHelper;
 
-import org.assertj.core.groups.Tuple;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
