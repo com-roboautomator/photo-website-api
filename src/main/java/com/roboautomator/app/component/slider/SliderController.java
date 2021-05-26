@@ -85,7 +85,7 @@ public class SliderController {
         if (!uuid.matches("^\\{?[A-F0-9a-f]{8}-[A-F0-9a-f]{4}-[A-F0-9a-f]{4}-[A-F0-9a-f]{4}-[A-F0-9a-f]{12}\\}?$")) {
             String errorMessage = uuid + " is not a valid UUID";
             log.info(errorMessage);
-            throw new SliderControllerValidationException(errorMessage, "collectionId");
+            throw new SliderControllerValidationException(errorMessage, "sliderId");
         }
     }
 

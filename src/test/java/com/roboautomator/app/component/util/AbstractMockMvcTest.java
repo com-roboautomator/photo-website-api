@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 
 import com.roboautomator.app.component.collection.CollectionRepository;
 import com.roboautomator.app.component.image.ImageRepository;
+import com.roboautomator.app.component.slider.SliderRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,6 +17,9 @@ public abstract class AbstractMockMvcTest {
 
     @MockBean
     protected ImageRepository imageRepository;
+
+    @MockBean
+    protected SliderRepository sliderRepository;
 
     @MockBean
     private EntityManager entityManager;

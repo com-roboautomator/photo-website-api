@@ -108,8 +108,6 @@ public class ImageControllerTest extends AbstractMockMvcTest {
 
                 var unpackedResponse = response.getResponse().getContentAsString();
 
-                System.out.println("RESPONSE " + unpackedResponse);
-
                 assertThat(unpackedResponse).isNotEmpty();
                 assertThat(unpackedResponse).doesNotContain("previous-title");
                 assertThat(unpackedResponse).doesNotContain("previous-description");
@@ -124,20 +122,20 @@ public class ImageControllerTest extends AbstractMockMvcTest {
         @Test
         void shouldReturn400WhenImageIsNotValidUUIDForGet() throws Exception {
 
-                var id = UUID.randomUUID();
-
-                willReturn(Optional.empty()).given(imageRepository).findById(id);
+                var id = "invalid-UUID";
 
                 var response = mockMvc
                                 .perform(get(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
                                                 .content(TestHelper.serializeObject(createValidImage().build())))
-                                .andExpect(status().isNotFound()).andReturn();
+                                .andExpect(status().isBadRequest()).andReturn();
 
                 var responseAsString = response.getResponse().getContentAsString();
 
-                assertThat(responseAsString).isNotEmpty();
-                assertThat(JsonPath.<String>read(responseAsString, "$.message"))
-                                .isEqualTo("Image with id \"" + id + "\" not found");
+                assertThat(responseAsString).isNotNull();
+                assertThat(JsonPath.<String>read(responseAsString, "$.message")).isEqualTo("Validation failed");
+                assertThat(JsonPath.<String>read(responseAsString, "$.errors[0].field")).isEqualTo("imageId");
+                assertThat(JsonPath.<String>read(responseAsString, "$.errors[0].error"))
+                                .contains("invalid-UUID is not a valid UUID");
 
         }
 
@@ -224,20 +222,20 @@ public class ImageControllerTest extends AbstractMockMvcTest {
         @Test
         void shouldReturn400WhenImageIsNotValidUUIDForDelete() throws Exception {
 
-                var id = UUID.randomUUID();
-
-                willReturn(Optional.empty()).given(imageRepository).findById(id);
+                var id = "invalid-UUID";
 
                 var response = mockMvc
                                 .perform(delete(TEST_ENDPOINT + "/" + id).contentType(MediaType.APPLICATION_JSON)
                                                 .content(TestHelper.serializeObject(createValidImage().build())))
-                                .andExpect(status().isNotFound()).andReturn();
+                                .andExpect(status().isBadRequest()).andReturn();
 
                 var responseAsString = response.getResponse().getContentAsString();
 
-                assertThat(responseAsString).isNotEmpty();
-                assertThat(JsonPath.<String>read(responseAsString, "$.message"))
-                                .isEqualTo("Image with id \"" + id + "\" not found");
+                assertThat(responseAsString).isNotNull();
+                assertThat(JsonPath.<String>read(responseAsString, "$.message")).isEqualTo("Validation failed");
+                assertThat(JsonPath.<String>read(responseAsString, "$.errors[0].field")).isEqualTo("imageId");
+                assertThat(JsonPath.<String>read(responseAsString, "$.errors[0].error"))
+                                .contains("invalid-UUID is not a valid UUID");
 
         }
 

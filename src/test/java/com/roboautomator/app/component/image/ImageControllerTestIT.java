@@ -95,27 +95,14 @@ public class ImageControllerTestIT {
 
     @Test
     void shouldReturnGetAllImagesFromDatabase() throws JSONException{
-
-        var id1 = UUID.randomUUID();
-        var id2 = UUID.randomUUID();
-
-        imageRepository.save(createValidImage().id(id1).build());
-        imageRepository.save(createValidImage().id(id2).build());
-
         var response = template.getForEntity(baseUrl.toString(), String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         var responseAsArray = TestHelper.parseJsonArray(response.getBody());
 
-        assertThat(responseAsArray.length()).isEqualTo(3); //allow for default test entity
-        assertThat(responseAsArray.getJSONObject(1).get("id").toString()).contains(id1.toString());
-        assertThat(responseAsArray.getJSONObject(2).get("id").toString()).contains(id2.toString());
-
-        //clean up
-        imageRepository.deleteById(id1);
-        imageRepository.deleteById(id2);
-
+        assertThat(responseAsArray.getJSONObject(0).get("id").toString()).contains("dba6cf0e-9c33-4955-baab-7f87ac91bf2b");
+        assertThat(responseAsArray.getJSONObject(1).get("id").toString()).contains("fd1f733e-2cdf-46ec-b1eb-3e5e55a98a93");
     }
 
     @Test

@@ -21,7 +21,7 @@ public class SliderControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({ SliderControllerValidationException.class })
-    public ResponseEntity<SliderExceptionResponse> handleSliderControllerValidationException(
+    public ResponseEntity<SliderExceptionResponse> handleSliderSliderValidationException(
             SliderControllerValidationException validationException) {
         var errors = List.of(new ValidationError(validationException.getField(), validationException.getMessage()));
         return ResponseEntity.badRequest().body(getValidationFailedResponse(errors));
