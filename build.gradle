@@ -20,7 +20,6 @@ dependencies {
     // For Spring Boot Base
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-validation')
-    implementation('org.projectlombok:lombok:1.18.12')
 
     // For Message Queue
     implementation('org.springframework.boot:spring-boot-starter-activemq')
@@ -57,7 +56,6 @@ dependencies {
 
     // Annotations
     annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
-    annotationProcessor('org.projectlombok:lombok:1.18.12')
 }
 
 flyway {
