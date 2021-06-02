@@ -2,20 +2,31 @@ package com.roboautomator.app.component.util;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
-
-@Getter
-@ToString
-@SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
 public class DefaultExceptionResponse<T> {
 
     private String message;
+    private List<?> errors;
 
-    private List<T> errors;
+    public DefaultExceptionResponse(String message, List<T> errors) {
+        this.message = message;
+        this.errors = errors;
+    }
+
+    public String toString() {
+        try {
+            return StringHelper.classToString(this);
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public List<?> getErrors() {
+        return errors;
+    }
+
 }

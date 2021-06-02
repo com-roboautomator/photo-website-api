@@ -3,26 +3,21 @@ package com.roboautomator.app.component.slider;
 import java.util.Set;
 
 import com.roboautomator.app.component.collection.CollectionEntity;
+import com.roboautomator.app.component.util.DefaultEntityBuilder;
 import com.roboautomator.app.component.util.StringHelper;
 
-public class SliderUpdate {
+public class SliderEntityBuilder extends DefaultEntityBuilder<SliderEntityBuilder> {
 
     private String title;
     private String colour;
     private Set<CollectionEntity> collections;
 
-    public SliderUpdate() {
+    public SliderEntityBuilder() {
         // EMPTY
     }
 
-    public SliderUpdate(SliderUpdateBuilder builder) {
-        this.title = builder.getTitle();
-        this.colour = builder.getColour();
-        this.collections = builder.getCollections();
-    }
-
-    public static SliderUpdateBuilder builder() {
-        return new SliderUpdateBuilder();
+    public SliderEntity build() {
+        return new SliderEntity(this);
     }
 
     public String toString() {
@@ -34,18 +29,27 @@ public class SliderUpdate {
         }
     }
 
-    public SliderEntity toSliderEntity() {
-        return SliderEntity.builder().collections(getCollections()).title(getTitle()).colour(getColour()).build();
+    public SliderEntityBuilder title(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public SliderEntityBuilder colour(String colour) {
+        this.colour = colour;
+        return this;
+    }
+
+    public SliderEntityBuilder collections(Set<CollectionEntity> collections){
+        this.collections = collections;
+        return this;
     }
 
     public String getTitle() {
         return title;
     }
-
     public String getColour() {
         return colour;
     }
-
     public Set<CollectionEntity> getCollections() {
         return collections;
     }

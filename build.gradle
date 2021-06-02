@@ -44,6 +44,9 @@ dependencies {
     // For Health/Readiness Actuators
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
+    // For utils
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+
     // For Testing
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('org.junit.jupiter:junit-jupiter:5.6.2')

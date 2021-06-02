@@ -27,11 +27,11 @@ public class ImageControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({ MethodArgumentNotValidException.class})
-    public ResponseEntity<ImageExceptionResponse> handleValidationException(MethodArgumentNotValidException ex){
+    @ExceptionHandler({ MethodArgumentNotValidException.class })
+    public ResponseEntity<ImageExceptionResponse> handleValidationException(MethodArgumentNotValidException ex) {
 
         var errors = new ArrayList<ValidationError>();
-        
+
         ex.getBindingResult().getAllErrors().forEach((error -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
@@ -55,7 +55,7 @@ public class ImageControllerAdvice {
     }
 
     private ImageExceptionResponse getValidationFailedResponse(List<ValidationError> errors) {
-        return ImageExceptionResponse.builder().message("Validation failed").errors(errors).build();
+        return new ImageExceptionResponse("Validation failed", errors);
     }
 
 }

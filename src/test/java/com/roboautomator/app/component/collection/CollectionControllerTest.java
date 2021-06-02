@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.roboautomator.app.component.collection.CollectionEntity.CollectionEntityBuilder;
 import com.roboautomator.app.component.util.AbstractMockMvcTest;
 import com.roboautomator.app.component.util.TestHelper;
 
@@ -261,12 +260,12 @@ public class CollectionControllerTest extends AbstractMockMvcTest {
                 assertThat(response2.get("id").toString()).contains(id2.toString());
         }
 
-        private static CollectionEntityBuilder<?, ?> createValidEntity() {
+        private static CollectionEntityBuilder createValidEntity() {
                 return CollectionEntity.builder().id(UUID.randomUUID()).title("test-title").index(0)
                                 .tagColour("test-tag-colour").tagTitle("test-tag-title").titleImage(1);
         }
 
-        private static CollectionUpdate.CollectionUpdateBuilder createValidCollectionBuilder() {
+        private static CollectionUpdateBuilder createValidCollectionBuilder() {
                 return CollectionUpdate.builder().title(TEST_TITLE).index(TEST_INDEX).tagColour(TEST_TAG_COLOUR)
                                 .tagTitle(TEST_TAG_TITLE).titleImage(TEST_TITLE_IMAGE);
         }

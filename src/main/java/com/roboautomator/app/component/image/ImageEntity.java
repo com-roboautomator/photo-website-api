@@ -9,30 +9,39 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.roboautomator.app.component.collection.CollectionEntity;
 import com.roboautomator.app.component.util.DefaultEntity;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
+import com.roboautomator.app.component.util.DefaultEntityBuilder;
 
 @Entity
 @Table(name = "image")
-@ToString(callSuper = true)
-@Getter
-@SuperBuilder
-@NoArgsConstructor
 public class ImageEntity extends DefaultEntity {
-    
+
     private String title;
     private String url;
     private Integer index;
     private String description;
-    
+
     @ManyToMany(mappedBy = "images")
     @JsonIgnore
-    private Set <CollectionEntity> collections;
+    private Set<CollectionEntity> collections;
 
-    public ImageEntity update(ImageUpdate imageUpdate){
+    public ImageEntity() {
+        super(new DefaultEntityBuilder<ImageEntityBuilder>());
+    }
+
+    public ImageEntity(ImageEntityBuilder builder) {
+        super(builder);
+        this.title = builder.getTitle();
+        this.url = builder.getUrl();
+        this.index = builder.getIndex();
+        this.description = builder.getDescription();
+        this.collections = builder.getCollections();
+    }
+
+    public static ImageEntityBuilder builder() {
+        return new ImageEntityBuilder();
+    }
+
+    public ImageEntity update(ImageUpdate imageUpdate) {
         this.title = imageUpdate.getTitle();
         this.url = imageUpdate.getUrl();
         this.index = imageUpdate.getIndex();
@@ -40,4 +49,23 @@ public class ImageEntity extends DefaultEntity {
         return this;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public Integer getIndex() {
+        return index;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Set<CollectionEntity> getCollections() {
+        return collections;
+    }
 }

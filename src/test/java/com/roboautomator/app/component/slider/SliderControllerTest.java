@@ -20,7 +20,6 @@ import static org.mockito.Mockito.verifyNoInteractions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jayway.jsonpath.JsonPath;
-import com.roboautomator.app.component.slider.SliderEntity.SliderEntityBuilder;
 import com.roboautomator.app.component.util.AbstractMockMvcTest;
 import com.roboautomator.app.component.util.TestHelper;
 
@@ -260,11 +259,11 @@ public class SliderControllerTest extends AbstractMockMvcTest {
 
     }
 
-    private static SliderEntityBuilder<?, ?> createValidSlider() {
+    private static SliderEntityBuilder createValidSlider() {
         return SliderEntity.builder().title(TITLE).colour(COLOUR);
     }
 
-    private static SliderUpdate.SliderUpdateBuilder createValidSliderUpdate() {
+    private static SliderUpdateBuilder createValidSliderUpdate() {
         return SliderUpdate.builder().title(TITLE).colour(COLOUR);
     }
 

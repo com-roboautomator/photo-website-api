@@ -3,9 +3,9 @@ package com.roboautomator.app.component.collection;
 import java.util.List;
 import java.util.UUID;
 
+import org.jboss.logging.Logger;
+
 import javax.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,14 +19,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
 @RestController
 @CrossOrigin
 @RequestMapping("/collection")
-@RequiredArgsConstructor
 public class CollectionController {
 
     private final CollectionRepository collectionRepository;
+    private final Logger log = Logger.getLogger(this.getClass());
+
+    public CollectionController(CollectionRepository repository) {
+        this.collectionRepository = repository;
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)

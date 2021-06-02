@@ -55,7 +55,7 @@ public class SliderControllerAdvice {
     }
 
     private SliderExceptionResponse getValidationFailedResponse(List<ValidationError> errors) {
-        return SliderExceptionResponse.builder().message("Validation failed").errors(errors).build();
+        return new SliderExceptionResponse("Validation failed", errors);
     }
 
 }

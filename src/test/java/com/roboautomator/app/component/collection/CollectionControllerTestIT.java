@@ -36,7 +36,7 @@ public class CollectionControllerTestIT {
     private static final String TEST_TAG_TITLE = "test-tag-title";
     private static final Integer TEST_TITLE_IMAGE = 1;
 
-    private static final CollectionUpdate.CollectionUpdateBuilder VALID_COLLECTION_UPDATE_BUILDER = CollectionUpdate
+    private static final CollectionUpdateBuilder VALID_COLLECTION_UPDATE_BUILDER = CollectionUpdate
             .builder().title(TEST_TITLE + "-update").index(TEST_INDEX + 1).tagColour(TEST_TAG_COLOUR + "-update")
             .tagTitle(TEST_TAG_TITLE + "-update").titleImage(TEST_TITLE_IMAGE + 1);
 

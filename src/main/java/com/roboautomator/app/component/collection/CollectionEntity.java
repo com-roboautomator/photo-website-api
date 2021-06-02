@@ -14,17 +14,8 @@ import com.roboautomator.app.component.image.ImageEntity;
 import com.roboautomator.app.component.slider.SliderEntity;
 import com.roboautomator.app.component.util.DefaultEntity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
-
 @Entity
 @Table(name = "collection")
-@ToString(callSuper = true)
-@Getter
-@SuperBuilder
-@NoArgsConstructor
 public class CollectionEntity extends DefaultEntity {
 
     private String title;
@@ -34,18 +25,33 @@ public class CollectionEntity extends DefaultEntity {
     private Integer titleImage;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-        name="image_collections",
-        joinColumns = @JoinColumn(name="collection_id"),
-        inverseJoinColumns = @JoinColumn(name="image_id")
-    )
-    private Set <ImageEntity> images;
+    @JoinTable(name = "image_collections", joinColumns = @JoinColumn(name = "collection_id"), inverseJoinColumns = @JoinColumn(name = "image_id"))
+    private Set<ImageEntity> images;
 
     @ManyToMany(mappedBy = "collections")
     @JsonIgnore
-    private Set <SliderEntity> sliders;
-    
-    public CollectionEntity update (CollectionUpdate collectionUpdate){
+    private Set<SliderEntity> sliders;
+
+    public CollectionEntity() {
+        super(new CollectionEntityBuilder());
+    }
+
+    public CollectionEntity(CollectionEntityBuilder builder) {
+        super(builder);
+        this.title = builder.getTitle();
+        this.index = builder.getIndex();
+        this.tagTitle = builder.getTagTitle();
+        this.tagColour = builder.getTagColour();
+        this.titleImage = builder.getTitleImage();
+        this.images = builder.getImages();
+        this.sliders = builder.getSliders();
+    }
+
+    public static CollectionEntityBuilder builder() {
+        return new CollectionEntityBuilder();
+    }
+
+    public CollectionEntity update(CollectionUpdate collectionUpdate) {
         title = collectionUpdate.getTitle();
         index = collectionUpdate.getIndex();
         tagTitle = collectionUpdate.getTagTitle();
@@ -53,6 +59,34 @@ public class CollectionEntity extends DefaultEntity {
         images = collectionUpdate.getImages();
         titleImage = collectionUpdate.getTitleImage();
         return this;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Integer getIndex() {
+        return index;
+    }
+
+    public String getTagTitle() {
+        return tagTitle;
+    }
+
+    public String getTagColour() {
+        return tagColour;
+    }
+
+    public Integer getTitleImage() {
+        return titleImage;
+    }
+
+    public Set<ImageEntity> getImages() {
+        return images;
+    }
+
+    public Set<SliderEntity> getSliders() {
+        return sliders;
     }
 
 }

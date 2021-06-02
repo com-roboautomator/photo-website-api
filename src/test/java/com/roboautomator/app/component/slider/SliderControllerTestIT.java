@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.roboautomator.app.component.slider.SliderEntity.SliderEntityBuilder;
 import com.roboautomator.app.component.util.TestHelper;
 
 import org.springframework.http.HttpMethod;
@@ -75,7 +74,7 @@ public class SliderControllerTestIT {
 
         var id = UUID.randomUUID();
 
-        sliderRepository.save(((SliderEntityBuilder<?, ?>) createValidSlider().id(id)).build());
+        sliderRepository.save(createValidSlider().id(id).build());
 
         var response = template.getForEntity(baseUrl.toString() + "/" + id, String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -150,11 +149,11 @@ public class SliderControllerTestIT {
     }
 
 
-    private static SliderEntityBuilder<?, ?> createValidSlider() {
+    private static SliderEntityBuilder createValidSlider() {
         return SliderEntity.builder().title(TITLE).colour(COLOUR);
     }
 
-    private static SliderUpdate.SliderUpdateBuilder createValidSliderUpdate() {
+    private static SliderUpdateBuilder createValidSliderUpdate() {
         return SliderUpdate.builder().title(TITLE + "-update").colour(COLOUR + "-update");
     }
 

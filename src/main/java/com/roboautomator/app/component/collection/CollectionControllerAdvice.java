@@ -56,7 +56,7 @@ public class CollectionControllerAdvice {
     }
 
     private CollectionExceptionResponse getValidationFailedResponse(List<ValidationError> errors) {
-        return CollectionExceptionResponse.builder().message("Validation failed").errors(errors).build();
+        return new CollectionExceptionResponse("Validation failed", errors);
     }
 
 }

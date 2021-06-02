@@ -10,23 +10,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.List;
 import java.util.UUID;
 
 import javax.validation.Valid;
 
+import org.jboss.logging.Logger;
 import org.springframework.http.HttpStatus;
 
-@Slf4j
 @RestController
 @RequestMapping("/image")
-@RequiredArgsConstructor
 public class ImageController {
 
     private final ImageRepository imageRepository;
+    private final Logger log = Logger.getLogger(this.getClass());
+
+    public ImageController(ImageRepository repository){
+        this.imageRepository = repository;
+    }
 
     @PutMapping(value = "/{imageId}")
     @ResponseStatus(HttpStatus.OK)

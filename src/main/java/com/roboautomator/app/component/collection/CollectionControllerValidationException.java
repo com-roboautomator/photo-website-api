@@ -1,8 +1,5 @@
 package com.roboautomator.app.component.collection;
 
-import lombok.Getter;
-
-@Getter
 public class CollectionControllerValidationException extends RuntimeException {
 
     private final String field;
@@ -10,6 +7,10 @@ public class CollectionControllerValidationException extends RuntimeException {
     public CollectionControllerValidationException(String exceptionMessage, String field) {
         super(exceptionMessage);
         this.field = field;
+    }
+
+    public String getField() {
+        return field;
     }
 
 }

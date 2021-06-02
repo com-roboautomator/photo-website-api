@@ -1,7 +1,6 @@
 package com.roboautomator.app.component.slider;
 
 import com.jayway.jsonpath.JsonPath;
-import com.roboautomator.app.component.slider.SliderEntity.SliderEntityBuilder;
 import com.roboautomator.app.component.util.AbstractMockMvcTest;
 import com.roboautomator.app.component.util.TestHelper;
 
@@ -85,7 +84,7 @@ public class SliderControllerAdviceTest extends AbstractMockMvcTest {
 
     }
 
-    private static SliderEntityBuilder<?, ?> createValidSlider() {
+    private static SliderEntityBuilder createValidSlider() {
         return SliderEntity.builder().title(TITLE).colour(COLOUR);
     }
 

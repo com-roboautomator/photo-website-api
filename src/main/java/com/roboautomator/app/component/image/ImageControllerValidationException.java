@@ -1,8 +1,5 @@
 package com.roboautomator.app.component.image;
 
-import lombok.Getter;
-
-@Getter
 public class ImageControllerValidationException extends RuntimeException {
 
     private final String field;
@@ -10,5 +7,9 @@ public class ImageControllerValidationException extends RuntimeException {
     public ImageControllerValidationException (String exceptionMessage, String field){
         super(exceptionMessage);
         this.field = field;
+    }
+
+    public String getField() {
+        return field;
     }
 }

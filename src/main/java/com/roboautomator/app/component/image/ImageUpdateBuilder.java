@@ -2,31 +2,19 @@ package com.roboautomator.app.component.image;
 
 import com.roboautomator.app.component.util.StringHelper;
 
-public class ImageUpdate {
+public class ImageUpdateBuilder {
 
     private String title;
     private String url;
     private Integer index;
     private String description;
 
-    public ImageUpdate() {
+    public ImageUpdateBuilder() {
         // EMPTY
     }
 
-    public ImageUpdate(ImageUpdateBuilder builder) {
-        this.title = builder.getTitle();
-        this.url = builder.getUrl();
-        this.index = builder.getIndex();
-        this.description = builder.getDescription();
-    }
-
-    public static ImageUpdateBuilder builder () {
-        return new ImageUpdateBuilder();
-    }
-
-    public ImageEntity toImageEntity() {
-        return ImageEntity.builder().title(getTitle()).url(getUrl()).index(getIndex()).description(getDescription())
-                .build();
+    public ImageUpdate build() {
+        return new ImageUpdate(this);
     }
 
     public String toString() {
@@ -36,6 +24,26 @@ public class ImageUpdate {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public ImageUpdateBuilder title(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public ImageUpdateBuilder url(String url) {
+        this.url = url;
+        return this;
+    }
+
+    public ImageUpdateBuilder index(Integer index) {
+        this.index = index;
+        return this;
+    }
+
+    public ImageUpdateBuilder description(String description) {
+        this.description = description;
+        return this;
     }
 
     public String getTitle() {
