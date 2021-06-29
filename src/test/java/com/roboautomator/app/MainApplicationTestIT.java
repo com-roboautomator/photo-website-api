@@ -22,9 +22,9 @@ class MainApplicationTestIT {
 
     @Test
     void testHealthEndpointRouting() throws Exception {
-        // var response = template.getForEntity("doneux-website-db.cfxlcyr0taj5.eu-west-2.rds.amazonaws.com:5432/doneux_website_backend:" + port, String.class);
+        //var response = template.getForEntity("http://doneux-website-db.cfxlcyr0taj5.eu-west-2.rds.amazonaws.com:" + port + "/doneux_website_backend", String.class);
 
-        // assertThat(response.getStatusCodeValue()).isEqualTo(200);
-        // assertThat(response.getBody()).contains("UP");
+        //assertThat(response.getStatusCodeValue()).isEqualTo(200);
+        //assertThat(response.getBody()).contains("UP");
     }
 }

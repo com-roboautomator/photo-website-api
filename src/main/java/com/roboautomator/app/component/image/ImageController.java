@@ -1,5 +1,6 @@
 package com.roboautomator.app.component.image;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import org.jboss.logging.Logger;
 import org.springframework.http.HttpStatus;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/image")
 public class ImageController {
 
