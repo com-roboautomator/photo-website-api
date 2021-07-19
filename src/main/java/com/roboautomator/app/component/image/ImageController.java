@@ -31,14 +31,14 @@ public class ImageController {
         this.imageRepository = repository;
     }
 
-    @PutMapping(value = "/{imageId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ImageEntity updateImage(@PathVariable String imageId, @Valid @RequestBody ImageUpdate imageUpdate) {
-        var entity = getEntity(imageId);
+    // @PutMapping(value = "/{imageId}")
+    // @ResponseStatus(HttpStatus.OK)
+    // public ImageEntity updateImage(@PathVariable String imageId, @Valid @RequestBody ImageUpdate imageUpdate) {
+    //     var entity = getEntity(imageId);
 
-        imageRepository.save(entity.update(imageUpdate));
-        return entity;
-    }
+    //     imageRepository.save(entity.update(imageUpdate));
+    //     return entity;
+    // }
 
     @GetMapping(value = "/{imageId}")
     @ResponseStatus(HttpStatus.OK)
@@ -52,21 +52,21 @@ public class ImageController {
         return imageRepository.findAll();
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.OK)
-    public UUID createImage(@Valid @RequestBody ImageUpdate update) {
-        log.info("Creating new image");
-        UUID id = UUID.randomUUID();
-        imageRepository.save(ImageEntity.builder().id(id).build().update(update));
-        return id;
-    }
+    // @PostMapping
+    // @ResponseStatus(HttpStatus.OK)
+    // public UUID createImage(@Valid @RequestBody ImageUpdate update) {
+    //     log.info("Creating new image");
+    //     UUID id = UUID.randomUUID();
+    //     imageRepository.save(ImageEntity.builder().id(id).build().update(update));
+    //     return id;
+    // }
 
-    @DeleteMapping(value = "/{imageId}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteCollection(@PathVariable String imageId){
-        var entity = getEntity(imageId);
-        imageRepository.deleteById(entity.getId());
-    }
+    // @DeleteMapping(value = "/{imageId}")
+    // @ResponseStatus(HttpStatus.OK)
+    // public void deleteCollection(@PathVariable String imageId){
+    //     var entity = getEntity(imageId);
+    //     imageRepository.deleteById(entity.getId());
+    // }
 
     private ImageEntity getEntity(String uuid) {
 

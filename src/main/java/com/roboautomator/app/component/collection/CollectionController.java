@@ -31,14 +31,14 @@ public class CollectionController {
         this.collectionRepository = repository;
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.OK)
-    public UUID createCollection(@Valid @RequestBody CollectionUpdate update) {
-        log.info("Creating new collection");
-        UUID id = UUID.randomUUID();
-        collectionRepository.save(CollectionEntity.builder().id(id).build().update(update));
-        return id;
-    }
+    // @PostMapping
+    // @ResponseStatus(HttpStatus.OK)
+    // public UUID createCollection(@Valid @RequestBody CollectionUpdate update) {
+    //     log.info("Creating new collection");
+    //     UUID id = UUID.randomUUID();
+    //     collectionRepository.save(CollectionEntity.builder().id(id).build().update(update));
+    //     return id;
+    // }
 
     @GetMapping(value = "/{collectionId}")
     @ResponseStatus(HttpStatus.OK)
@@ -53,23 +53,23 @@ public class CollectionController {
     }
 
 
-    @PutMapping(value = "/{collectionId}")
-    @ResponseStatus(HttpStatus.OK)
-    public CollectionEntity updateCollection(@PathVariable String collectionId,
-            @Valid @RequestBody CollectionUpdate collectionUpdate) {
-        var entity = getEntity(collectionId);
+    // @PutMapping(value = "/{collectionId}")
+    // @ResponseStatus(HttpStatus.OK)
+    // public CollectionEntity updateCollection(@PathVariable String collectionId,
+    //         @Valid @RequestBody CollectionUpdate collectionUpdate) {
+    //     var entity = getEntity(collectionId);
 
-        log.info("Updating collection with id: " + collectionId);
-        collectionRepository.save(entity.update(collectionUpdate));
-        return entity;
-    }
+    //     log.info("Updating collection with id: " + collectionId);
+    //     collectionRepository.save(entity.update(collectionUpdate));
+    //     return entity;
+    // }
 
-    @DeleteMapping(value = "/{collectionId}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteCollection(@PathVariable String collectionId) {
-        var entity = getEntity(collectionId);
-        collectionRepository.deleteById(entity.getId());
-    }
+    // @DeleteMapping(value = "/{collectionId}")
+    // @ResponseStatus(HttpStatus.OK)
+    // public void deleteCollection(@PathVariable String collectionId) {
+    //     var entity = getEntity(collectionId);
+    //     collectionRepository.deleteById(entity.getId());
+    // }
 
     private CollectionEntity getEntity(String collectionId) {
 

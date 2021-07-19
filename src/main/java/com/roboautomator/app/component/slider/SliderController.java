@@ -30,14 +30,14 @@ public class SliderController {
         this.sliderRepository = repository;
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.OK)
-    public UUID createSlider(@Valid @RequestBody SliderUpdate update){
-        log.info("Creating new slider");
-        UUID id = UUID.randomUUID();
-        sliderRepository.save(SliderEntity.builder().id(id).build().update(update));
-        return id;
-    }
+    // @PostMapping
+    // @ResponseStatus(HttpStatus.OK)
+    // public UUID createSlider(@Valid @RequestBody SliderUpdate update){
+    //     log.info("Creating new slider");
+    //     UUID id = UUID.randomUUID();
+    //     sliderRepository.save(SliderEntity.builder().id(id).build().update(update));
+    //     return id;
+    // }
 
     @GetMapping(value = "/{sliderId}")
     @ResponseStatus(HttpStatus.OK)
@@ -51,22 +51,22 @@ public class SliderController {
         return sliderRepository.findAll();
     }
 
-    @PutMapping(value = "/{sliderId}")
-    @ResponseStatus(HttpStatus.OK)
-    public SliderEntity updateSlider(@PathVariable String sliderId, @Valid @RequestBody SliderUpdate sliderUpdate){
-        var entity = getEntity(sliderId);
+    // @PutMapping(value = "/{sliderId}")
+    // @ResponseStatus(HttpStatus.OK)
+    // public SliderEntity updateSlider(@PathVariable String sliderId, @Valid @RequestBody SliderUpdate sliderUpdate){
+    //     var entity = getEntity(sliderId);
 
-        log.info("Updating slider with id: " + sliderId);
-        sliderRepository.save(entity.update(sliderUpdate));
-        return entity;
-    }
+    //     log.info("Updating slider with id: " + sliderId);
+    //     sliderRepository.save(entity.update(sliderUpdate));
+    //     return entity;
+    // }
 
-    @DeleteMapping(value = "/{sliderId}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteSlider(@PathVariable String sliderId){
-        var entity = getEntity(sliderId);
-        sliderRepository.deleteById(entity.getId());
-    }
+    // @DeleteMapping(value = "/{sliderId}")
+    // @ResponseStatus(HttpStatus.OK)
+    // public void deleteSlider(@PathVariable String sliderId){
+    //     var entity = getEntity(sliderId);
+    //     sliderRepository.deleteById(entity.getId());
+    // }
 
     private SliderEntity getEntity(String sliderId) {
         checkIfValidUUID(sliderId);
